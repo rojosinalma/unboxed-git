@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'bundler'
+Bundler.require(:default)
+
+class Unboxed < Thor
+
+  attr_reader :gh
+
+  desc 'guess', 'Guess the favorite language of a github user'
+  def guess(username)
+    langs = []
+    repos = gh.repos.list(user: username).body.collect(&:name)
+
+    repos.each do |repo|
+      langs.push gh.repos.languages(user: username, repo: repo).body
+    end
+
+    # This is going trough every hash with languages as keys and totals as values
+    # Then adds the totals if they have the same language key.
+    # So, with two example responses: {Ruby: 1, JS: 2} and {Ruby: 1, JS: 3} this line would return {Ruby: 2, JS: 5}
+    totals = langs.reduce({}) { | sum, langs_response| sum.merge(langs_response){ |_, i, j| i + j } }
+
+    # Early return
+    puts "Error: username \"#{username}\" has no favorite languages (is the username correct?)" and return if totals.empty?
+
+    # Presentation
+    sorted = totals.sort_by { |_,value| value }.reverse.take(10)
+    puts "\"#{username}\" top 10 favorite languages (by bytes of code):"
+    sorted.each_with_index do |pair, i|
+      puts "#{i+1}. #{pair[0]} - #{pair[1]}b"
+    end
+    puts "(#{repos.count} repositories were fetched)"
+
+    puts "\nFavorite language (by total bytes of code in repositories): #{sorted.first[0]}"
+  end
+
+  private
+
+  # Get here: https://github.com/settings/tokens
+  # Only repo permissions are needed.
+  def gh
+    gh ||= Github.new(oauth_token: ENV['GH_OAUTH_TOKEN'])
+  end
+end
+
+Unboxed.start(ARGV)
