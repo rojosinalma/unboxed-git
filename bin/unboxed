@@ -8,8 +8,8 @@ class Unboxed < Thor
 
   attr_reader :gh
 
-  desc 'guess', 'Guess the favorite language of a github user'
-  def guess(username)
+  desc 'github', 'Guess the favorite language of a github user'
+  def github(username)
     langs = []
     repos = gh.repos.list(user: username).body.collect(&:name)
 
