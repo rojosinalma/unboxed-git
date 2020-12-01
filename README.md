@@ -17,5 +17,9 @@ Then:
 
 ```ruby
   $ bundle install
-  $ bin/unboxed guess <username> 
+  $ bin/unboxed github <username> 
 ```
+
+### Example:
+
+![Example](/unboxed-git.png?raw=true "Optional Title")
