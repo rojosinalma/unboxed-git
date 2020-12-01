@@ -23,3 +23,9 @@ Then:
 ### Example:
 
 ![Example](/unboxed-git.png?raw=true "Optional Title")
+
+
+### Caveats:
+
+It only fetches the first page of repos provided by Githubs API, which returns 30 elements. This is intentional to avoid rate limiting from Github.
+_(Who has more than 30 repos anyway, right?)_
