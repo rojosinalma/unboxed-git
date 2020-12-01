@@ -11,7 +11,7 @@ Small tool to fetch a github user most used languages.
 
 ### Usage: 
 
-Get a [Github Token](https://github.com/settings/tokens) and set it as an environment variable called `GH_OAUTH_TOKEN`.
+Get a [Github Token](https://github.com/settings/tokens) with just repository permissions and set it as an environment variable called `GH_OAUTH_TOKEN`.
 
 Then:
 
