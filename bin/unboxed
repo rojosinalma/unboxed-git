@@ -17,9 +17,8 @@ class Unboxed < Thor
       langs.push gh.repos.languages(user: username, repo: repo).body
     end
 
-    # This is going trough every hash with languages as keys and totals as values
-    # Then adds the totals if they have the same language key.
-    # So, with two example responses: {Ruby: 1, JS: 2} and {Ruby: 1, JS: 3} this line would return {Ruby: 2, JS: 5}
+    # This is going trough every hash with languages as keys and totals as values, then adds the totals if they have the same language key.
+    # i.e: hash_a = {Ruby: 1, JS: 2}, hash_b = {Ruby: 1, JS: 3} -> totals = {Ruby: 2, JS: 5}
     totals = langs.reduce({}) { | sum, langs_response| sum.merge(langs_response){ |_, i, j| i + j } }
 
     # Early return
